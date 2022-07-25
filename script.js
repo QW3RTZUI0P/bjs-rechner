@@ -100,19 +100,29 @@ function main(data) {
 //Rechnung Anfang
 function rechnung(geschlecht, jahrgang, klassenstufe, sprint, sprung, wurf) {
   var intGeschlecht;
+  var gesamtPunkte;
   if (geschlecht == "m" || geschlecht == "M") {
     intGeschlecht = 0;
+    gesamtPunkte = rechnung2(geschlecht, jahrgang, klassenstufe, sprint, sprung, wurf, intGeschlecht);
   } else if (geschlecht == "w" || geschlecht == "W") {
     intGeschlecht = 1;
+    gesamtPunkte = rechnung2(geschlecht, jahrgang, klassenstufe, sprint, sprung, wurf, intGeschlecht);
   }
-  console.log(klassenstufe);
+  else {
+    gesamtPunkte = 0;
+  }
+  
+  return gesamtPunkte;
+}
+
+function rechnung2(geschlecht, jahrgang, klassenstufe, sprint, sprung, wurf, intGeschlecht) {
   klasseInDisziplin(klassenstufe);
   a = werte[intGeschlecht][sprintDistanz][0];
   c = werte[intGeschlecht][sprintDistanz][1];
-  console.log(a);
-  console.log(c);
-  console.log(sprintDistanzm);
-  console.log(sprint);
+  // console.log(a);
+  // console.log(c);
+  // console.log(sprintDistanzm);
+  // console.log(sprint);
   var punkteSprint = Math.floor((sprintDistanzm / sprint - a) / c);
   if (punkteSprint < 0) {
     punkteSprint = 0;

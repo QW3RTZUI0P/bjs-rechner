@@ -1,1 +1,1 @@
-#1 Bundesjugendspiele-Rechner
+#Bundesjugendspiele-Rechner
