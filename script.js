@@ -56,6 +56,7 @@ var c;
 let header;
 let dateiName;
 var klasse;
+var leeresFeld = "";
 const myForm = document.getElementById("myForm");
 const csvFile = document.getElementById("csvFile");
 
@@ -75,14 +76,28 @@ myForm.addEventListener("submit", function (e) {
   reader.readAsText(input, "windows-1252");
   reader.onload = function (e) {
     const text = e.target.result;
-    console.log(text);
-    let data = $.csv.toObjects(text);
-    console.log(data);
-    main(data);
-    
+    if (kommaCheck(text)) {
+      window.alert("Komma gefunden. Bitte Datei überprüfen.");
+    } else {
+      console.log(text);
+      let data = $.csv.toObjects(text);
+      console.log(data.length);
+
+      console.log(data.length);
+      main(data);
+    }
+
     //let data = csvToArray(text);
   };
 });
+
+function kommaCheck(text) {
+  if (text.search(",") != -1) {
+    return true;
+  } else {
+    return false;
+  }
+}
 
 //Function ruft weitere aus zum Berechnen und am Ende exportieren
 function main(data) {
@@ -103,19 +118,42 @@ function rechnung(geschlecht, jahrgang, klassenstufe, sprint, sprung, wurf) {
   var gesamtPunkte;
   if (geschlecht == "m" || geschlecht == "M") {
     intGeschlecht = 0;
-    gesamtPunkte = rechnung2(geschlecht, jahrgang, klassenstufe, sprint, sprung, wurf, intGeschlecht);
+    gesamtPunkte = rechnung2(
+      geschlecht,
+      jahrgang,
+      klassenstufe,
+      sprint,
+      sprung,
+      wurf,
+      intGeschlecht
+    );
   } else if (geschlecht == "w" || geschlecht == "W") {
     intGeschlecht = 1;
-    gesamtPunkte = rechnung2(geschlecht, jahrgang, klassenstufe, sprint, sprung, wurf, intGeschlecht);
-  }
-  else {
+    gesamtPunkte = rechnung2(
+      geschlecht,
+      jahrgang,
+      klassenstufe,
+      sprint,
+      sprung,
+      wurf,
+      intGeschlecht
+    );
+  } else {
     gesamtPunkte = 0;
   }
-  
+
   return gesamtPunkte;
 }
 
-function rechnung2(geschlecht, jahrgang, klassenstufe, sprint, sprung, wurf, intGeschlecht) {
+function rechnung2(
+  geschlecht,
+  jahrgang,
+  klassenstufe,
+  sprint,
+  sprung,
+  wurf,
+  intGeschlecht
+) {
   klasseInDisziplin(klassenstufe);
   a = werte[intGeschlecht][sprintDistanz][0];
   c = werte[intGeschlecht][sprintDistanz][1];
@@ -123,25 +161,37 @@ function rechnung2(geschlecht, jahrgang, klassenstufe, sprint, sprung, wurf, int
   // console.log(c);
   // console.log(sprintDistanzm);
   // console.log(sprint);
-  var punkteSprint = Math.floor((sprintDistanzm / sprint - a) / c);
-  if (punkteSprint < 0) {
-    punkteSprint = 0;
+  if (sprint == 0 || sprint == leeresFeld) {
+    var punkteSprint = 0;
+  } else {
+    var punkteSprint = Math.floor((sprintDistanzm / sprint - a) / c);
+    if (punkteSprint < 0) {
+      punkteSprint = 0;
+    }
   }
-  console.log("Sprint " + punkteSprint);
+  console.log("Sprint: " + punkteSprint);
 
   a = werte[intGeschlecht][3][0];
   c = werte[intGeschlecht][3][1];
-  var punkteSprung = Math.floor((Math.sqrt(sprung) - a) / c);
-  if (punkteSprung < 0) {
-    punkteSprung = 0;
+  if (sprung == 0 || sprung == leeresFeld) {
+    var punkteSprung = 0;
+  } else {
+    var punkteSprung = Math.floor((Math.sqrt(sprung) - a) / c);
+    if (punkteSprung < 0) {
+      punkteSprung = 0;
+    }
   }
   console.log("Sprung " + punkteSprung);
 
   a = werte[intGeschlecht][ballGewicht][0];
   c = werte[intGeschlecht][ballGewicht][1];
-  var punkteWurf = Math.floor((Math.sqrt(wurf) - a) / c);
-  if (punkteWurf < 0) {
-    punkteWurf = 0;
+  if (wurf == 0 || wurf == leeresFeld) {
+    var punkteWurf = 0;
+  } else {
+    var punkteWurf = Math.floor((Math.sqrt(wurf) - a) / c);
+    if (punkteWurf < 0) {
+      punkteWurf = 0;
+    }
   }
   console.log("Wurf " + punkteWurf);
 
@@ -166,7 +216,7 @@ function klasseInDisziplin(klassenstufe) {
   }
 }
 
-function welcheUrkunde(geschlecht, jahrgang, gesamtPunkte) {
+function welcheUrkunde(geschlecht, jahrgang, gesamtPunkte, data, i) {
   var intGeschlecht;
   if (geschlecht == "m" || geschlecht == "M") {
     intGeschlecht = 0;
@@ -176,18 +226,27 @@ function welcheUrkunde(geschlecht, jahrgang, gesamtPunkte) {
 
   var newAlter = new Date().getFullYear() - jahrgang - 8;
   var welcheUrkunde;
-  if (urkunde[intGeschlecht][newAlter][0] > gesamtPunkte) {
-    console.log("Teilnehmerurkunde");
-    welcheUrkunde = "Teilnehmerurkunde";
-  } else if (
-    urkunde[intGeschlecht][newAlter][0] <= gesamtPunkte &&
-    urkunde[intGeschlecht][newAlter][1] > gesamtPunkte
+  if (
+    gesamtPunkte > 0 ||
+    data[i].Wurf != leeresFeld ||
+    data[i].Sprung != leeresFeld ||
+    data[i].Sprint != leeresFeld
   ) {
-    console.log("Siegerurkunde");
-    welcheUrkunde = "Siegerurkunde";
+    if (urkunde[intGeschlecht][newAlter][0] > gesamtPunkte) {
+      console.log("Teilnehmerurkunde");
+      welcheUrkunde = "Teilnehmerurkunde";
+    } else if (
+      urkunde[intGeschlecht][newAlter][0] <= gesamtPunkte &&
+      urkunde[intGeschlecht][newAlter][1] > gesamtPunkte
+    ) {
+      console.log("Siegerurkunde");
+      welcheUrkunde = "Siegerurkunde";
+    } else {
+      console.log("Ehrenurkunde");
+      welcheUrkunde = "Ehrenurkunde";
+    }
   } else {
-    console.log("Ehrenurkunde");
-    welcheUrkunde = "Ehrenurkunde";
+    welcheUrkunde = leeresFeld;
   }
   return welcheUrkunde;
 }
@@ -205,8 +264,19 @@ function ErgebnisseBerechnen(data) {
     data[i].Urkunde = welcheUrkunde(
       data[i].Geschlecht,
       data[i].Jahrgang,
-      data[i].Ergebnis
+      data[i].Ergebnis,
+      data,
+      i
     );
+    if (
+      (data[i].Ergebnis == 0 &&
+        data[i].Wurf == leeresFeld &&
+        data[i].Sprung == leeresFeld &&
+        data[i].Sprint == leeresFeld) ||
+      data[i].Name == ""
+    ) {
+      data[i].Ergebnis = leeresFeld;
+    }
   }
 
   return data;
@@ -229,7 +299,11 @@ function isNumeric(str) {
   if (typeof str == "number") {
     whattoreturn = str;
   } else if (typeof str == "string") {
-    whattoreturn = parseFloat(str.replace(/[^0-9.]/g, ""));
+    if (str != "") {
+      whattoreturn = parseFloat(str.replace(/[^0-9.]/g, ""));
+    } else {
+      whattoreturn = leeresFeld;
+    }
 
     //whattoreturn = parseFloat(str);
   }
@@ -245,7 +319,8 @@ function newExport(data) {
   var csvData = $.csv.fromObjects(data);
 
   var hiddenElement = document.createElement("a");
-  hiddenElement.href = "data:text/csv;charset=utf-8,%EF%BB%BF" + encodeURI(csvData);
+  hiddenElement.href =
+    "data:text/csv;charset=utf-8,%EF%BB%BF" + encodeURI(csvData);
   hiddenElement.target = "_blank";
   dateiName = dateiName.replace(/.csv/g, "");
   hiddenElement.download = dateiName + "_ausgefüllt.csv";

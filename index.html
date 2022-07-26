@@ -4,17 +4,112 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title></title>
+    <title>BJS Rechner</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <form id="myForm">
-      <input type="file" id="csvFile" accept=".csv" />
-      <br />
-      <input type="submit" value="Submit" />
-    </form>
+    <div id="rectangle">
+      <div class="inhalt">
+        <h1>Bundesjugendspiele-Rechner</h1>
+        <form id="myForm">
+          <input type="file" id="csvFile" accept=".csv" />
+          <br />
+          <input type="submit" value="Ausrechnen" />
+        </form>
+        <div class="dokumentation">
+          <h2>Anleitung</h2>
+          <h3>Inhalt</h3>
+          <ul>
+            <li>Funktionsweise</li>
+            <li>Dezimaltrennzeichen in Excel ändern</li>
+            <li>Tabelle vorbereiten</li>
+            <li>Ergebnisse in Webseite ausrechnen</li>
+            <li>Ausgewertete Tabelle anschauen und drucken</li>
+          </ul>
+          <h3>Funktionsweise</h3>
+          <p>
+            Damit nicht mehr jede Punktzahl und Urkunde jedes Schülers einzeln
+            ausgerechnet werden muss, bietet dieser Rechner die Möglichkeit,
+            eine Klassenliste mit eingetragenen Leistungen für Sprint, Sprung
+            und Wurf komplett automatisiert auszuwerten und als ausgefühlte
+            Tabelle auf dem Computer zu speichern.
+          </p>
+          <h3>Dezimaltrennzeichen in Excel ändern</h3>
+          <p>
+            Dies muss nur beim einmal beim ersten Benutzen gemacht werden, da
+            Excel die Einstellung danach speichert.
+            <br />
+            <br />
+
+            Datei => Optionen => Erweitert => Haken bei „Trennzeichen vom
+            Betriebssystem übernehmen“ entfernen => Dezimaltrennzeichen in Punkt
+            ändern => Mit OK abschließen
+          </p>
+          <h3>Tabelle vorbereiten</h3>
+          <p>
+            Damit keine Rechtschreibfehler das komplette Programm in die Knie
+            zwingen haben wir eine Excel-Vorlage vorbereiten, die
+            <a
+              href="Vorlagen/Vorlage-BJS-Rechner.xlsx"
+              download="Vorlage-BJS-Rechner.xlsx"
+              >hier</a
+            >
+            heruntergeladen werden kann. Nach dem Download kann man die Datei
+            mit Doppelklick in Excel öffnen. Jetzt den kompletten Inhalt der
+            Klassenliste in die Vorlage kopieren, sodass die jeweiligen
+            Spaltenüberschriften mit dem Zeileninhalt übereinstimmen. Nun das
+            Geschlecht jeder Person manuell mit einem w für weiblich und einem m
+            für männlich eintragen. Daraufhin die Messwerte mit einem Punkt als
+            Trennzeichen ohne Einheit eintragen. Hier darf KEIN Komma verwendet
+            werden. Die letzten beiden Spalten freilassen.
+            <br />
+            <br />
+            Die nun ausgefüllte Tabelle nicht direkt speichern, sondern
+            „Speichern unter“ und „Durchsuchen“ drücken, daraufhin den
+            Speicherort auswählen, der Datei einen neuen Namen geben und
+            unbedingt den Dateityp in „CSV (Trennzeichen-getrennt)“ ändern.
+            Jetzt noch speichern und die Datei ist fertig.
+          </p>
+          <h3>Ergebnisse in Webseite ausrechnen</h3>
+          <p>
+            Um die Tabelle auszuwerten auf der Website „Datei auswählen“
+            drücken, in dem erscheinenden Fenster die Datei auswählen und mit
+            Öffnen bestätigen. Jetzt noch „Auswerten“ drücken und die fertige
+            Tabelle wird sofort heruntergeladen. Falls nichts passieren sollte,
+            die Seite aktualisieren und noch einmal versuchen.
+          </p>
+          <h3>Ausgewertete Tabelle anschauen und drucken</h3>
+          <p>
+            Gleich vorweg, es kann vorkommen, dass Umlaute sowie andere dem
+            englischen Alphabet unbekannte Symbole nicht korrekt angezeigt
+            werden. Deswegen bei Unstimmigkeiten immer mit der
+            Original-Klassenliste abgleichen.
+            <br />
+            <br />
+            Um das Drucken der Tabelle zu vereinfachen, haben wir auch eine
+            Vorlage hierfür erstellt, die
+            <a
+              href="Vorlagen/Vorlage-Auswertung.xlsx"
+              download="Vorlage-Auswertung.xlsx"
+              >hier</a
+            >
+            heruntergeladen werden kann. Diese ist optional, kann aber ein wenig
+            Zeit sparen.
+            <br />
+            <br />
+            Zur Verwendung der Vorlage den kompletten Inhalt der ausgewerteten
+            Tabelle hineinkopieren. Damit jede Spalte genau die richtige breite
+            für ihren Inhalt hat, allen Inhalt der Tabelle auswählen, in der
+            Registerkarte Start auf Format klicken und „Spaltenbreite
+            automatisch anpassen“ drücken. Falls nun noch gedruckt werden
+            möchte, die Tabelle über Datei, Exportieren und PDF/XPS-Dokument als
+            PDF abspeichern.
+          </p>
+        </div>
+      </div>
+    </div>
 
     <script src="script.js" async defer></script>
     <script src="jquery-csv.js" async defer></script>
@@ -22,6 +117,5 @@
       type="text/javascript"
       src="https://code.jquery.com/jquery-1.7.1.min.js"
     ></script>
-    <a href="Vorlage-BJS-Rechner.xlsx" download>Excel Tabelle als Vorlage zum Eintragen der Daten </a>
   </body>
 </html>
